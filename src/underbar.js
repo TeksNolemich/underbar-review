@@ -184,13 +184,19 @@
   //          No accumulator is given so the first element is used.
   _.reduce = function(collection, iterator, accumulator) {
     var startIndex = 0;
-    if (!accumulator) { 
+
+    if (accumulator === undefined) { 
       accumulator = collection[0]; 
       startIndex = 1;
     }
+
     for (var i = startIndex; i < collection.length; i++) {
-      accumulator += iterator(accumulator, collection[i]);
+      var elementToAdd = iterator(accumulator, collection[i]);
+      if (elementToAdd !== undefined) {
+        accumulator = elementToAdd;
+      }
     }
+
     return accumulator;
   };
 
@@ -210,13 +216,23 @@
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator) {
     // TIP: Try re-using reduce() here.
+    iterator = iterator || _.identity;
+    return _.reduce(collection, function(acc, element) {
+          if(!iterator(element)) {
+            return false 
+          }
+    }, true);
   };
 
   // Determine whether any of the elements pass a truth test. If no iterator is
   // provided, provide a default one
   _.some = function(collection, iterator) {
-    // TIP: There's a very clever way to re-use every() here.
+    iterator = iterator || _.identity;
+    _.each()
   };
+
+  // expect(_.some([true, {}, 1], _.identity)).to.be.true;
+  // 
 
 
   /**
